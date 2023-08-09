@@ -16,7 +16,7 @@ function PublicPage() {
     $.ajax({
       url: '/buzzin',
       method: 'POST',
-      contentType: 'multipart/form-data',
+      contentType: 'application/x-www-form-urlencoded',
       data: form_data,
       success: function (data) {
         console.log('Form submitted successfully');
@@ -61,7 +61,7 @@ function PrivatePage() {
     $.ajax({
       url: '/updatepublickey',
       method: 'POST',
-      contentType: 'multipart/form-data',
+      contentType: 'application/x-www-form-urlencoded',
       data: form_data,
       success: function (data) {
         console.log('Form submitted successfully');
