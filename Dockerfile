@@ -1,7 +1,7 @@
 FROM python:3.11.4
 
 WORKDIR /workspace
-# COPY requirements.txt .
+COPY requirements.txt .
 # COPY app.py .
 # COPY static .
 # COPY worker.py .
