@@ -10,19 +10,20 @@ function PublicPage() {
     e.preventDefault();
     // Handle form submission to your chosen URL
     const form_data = {
-      public_passphrase: publicPassphrase
+      "public_passphrase": publicPassphrase
     }
 
     $.ajax({
-      url: 'https://gagan.bet/buzzin',
+      url: '/buzzin',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(form_data),
+      data: form_data,
       success: function (data) {
         console.log('Form submitted successfully');
       },
       error: function (error) {
         console.error('Form submission failed', error);
+        console.log(form_data);
       },
     });
 
@@ -53,20 +54,21 @@ function PrivatePage() {
     e.preventDefault();
     // Handle form submission to your chosen URL
     const form_data = {
-      private_passphrase: privatePassphrase,
-      new_public_passphrase: newPublicPassphrase
+      "private_passphrase": privatePassphrase,
+      "new_public_passphrase": newPublicPassphrase
     }
 
     $.ajax({
-      url: 'https://gagan.bet/updatepublickey',
+      url: '/updatepublickey',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(form_data),
+      data: form_data,
       success: function (data) {
         console.log('Form submitted successfully');
       },
       error: function (error) {
         console.error('Form submission failed', error);
+        console.log(form_data);
       },
     });
 
