@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
 import $ from 'jquery';
 
@@ -111,10 +111,10 @@ function App() {
           </ul>
         </nav>
 
-        <Switch>
-          <Route path="/" exact component={PublicPage} />
-          <Route path="/private" component={PrivatePage} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<PublicPage/>} />
+          <Route path="/private" element={<PrivatePage/>} />
+        </Routes>
       </div>
     </Router>
   );
