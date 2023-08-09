@@ -14,7 +14,7 @@ rdb.set('PUBLIC_PASSPHRASE', os.environ['INIT_PUBLIC_KEY'])
 # Serve the React app
 @app.route('/')
 def index():
-    return redirect('http://gagan.bet/index.html')
+    return redirect('/index.html')
 
 # Handle buzz in request
 @app.route('/buzzin', methods=['POST'])

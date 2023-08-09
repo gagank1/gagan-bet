@@ -12,7 +12,7 @@ def run():
     try:
         for message in p.listen():
             d: bytes = message['data']
-            d_dict = json.loads(d.decode())
+            d_dict = json.loads(d)
             print(f'Got message: {d_dict}')
     except Exception as e:
         p.close()
