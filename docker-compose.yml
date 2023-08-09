@@ -1,0 +1,16 @@
+services:
+  flask:
+    build: .
+    network_mode: "host"
+    depends_on:
+      - redis
+  worker:
+    build: .
+    network_mode: "host"
+    command: python worker.py
+    depends_on:
+      - redis
+  redis:
+    image: redis:7.0.12
+    ports:
+      - 6379:6379
