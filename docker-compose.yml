@@ -2,6 +2,8 @@ services:
   flask:
     build: .
     network_mode: "host"
+    volumes:
+      - /home/gagan/gagan-bet:/workspace
     environment:
       - PRIVATE_KEY=miniwhores
       - INIT_PUBLIC_KEY=asdf
@@ -11,6 +13,8 @@ services:
     build: .
     network_mode: "host"
     command: python worker.py
+    volumes:
+      - /home/gagan/gagan-bet:/workspace
     depends_on:
       - redis
   redis:

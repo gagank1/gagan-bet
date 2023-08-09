@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 import redis
 import os
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/', static_folder='static')
 
 # Sets up redis, set keys from docker compose environment variables
 rdb = redis.Redis(host='localhost', port=6379, decode_responses=True)
@@ -14,7 +14,7 @@ rdb.set('PUBLIC_PASSPHRASE', os.environ['INIT_PUBLIC_KEY'])
 # Serve the React app
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect('http://gagan.bet/index.html')
 
 # Handle buzz in request
 @app.route('/buzzin', methods=['POST'])
