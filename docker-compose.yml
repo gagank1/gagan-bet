@@ -2,6 +2,9 @@ services:
   flask:
     build: .
     network_mode: "host"
+    environment:
+      - PRIVATE_KEY=miniwhores
+      - INIT_PUBLIC_KEY=asdf
     depends_on:
       - redis
   worker:
