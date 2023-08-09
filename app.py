@@ -3,7 +3,7 @@ import redis
 import os
 import json
 
-app = Flask(__name__, static_url_path='/', static_folder='static')
+app = Flask(__name__, static_url_path='/', static_folder='frontend/build')
 
 # Sets up redis, set keys from docker compose environment variables
 rdb = redis.Redis(host='localhost', port=6379, decode_responses=True)
