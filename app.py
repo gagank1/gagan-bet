@@ -11,10 +11,20 @@ if __name__ != '__main__':
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
 
-# Sets up redis, set keys from docker compose environment variables
 rdb = redis.Redis(host='localhost', port=6379, decode_responses=True)
-rdb.set('PRIVATE_PASSPHRASE', os.environ['PRIVATE_KEY'])
-rdb.set('PUBLIC_PASSPHRASE', os.environ['INIT_PUBLIC_KEY'])
+
+# load private/public keys from previous run if available
+if rdb.exists('PRIVATE_PASSPHRASE') == 0:
+    rdb.set('PRIVATE_PASSPHRASE', os.environ['PRIVATE_KEY'])
+    app.logger.info(f'PRIVATE_PASSPHRASE initialized to {os.environ["PRIVATE_KEY"]}')
+else:
+    app.logger.info(f'PRIVATE_PASSPHRASE found: {rdb.get("PRIVATE_PASSPHRASE")}')
+
+if rdb.exists('PUBLIC_PASSPHRASE') == 0:
+    rdb.set('PUBLIC_PASSPHRASE', os.environ['INIT_PUBLIC_KEY'])
+    app.logger.info(f'PUBLIC_PASSPHRASE initialized to {os.environ["INIT_PUBLIC_KEY"]}')
+else:
+    app.logger.info(f'PUBLIC_PASSPHRASE found: {rdb.get("PUBLIC_PASSPHRASE")}')
 
 
 # Serve the React app
