@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -129,7 +129,7 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/">Public Page</Link>
+                <Link to="/public">Public Page</Link>
               </li>
               <li>
                 <Link to="/private">Private Page</Link>
@@ -138,8 +138,9 @@ function App() {
           </nav>
 
           <Routes>
-            <Route path="/" element={<PublicPage/>} />
+            <Route path="/public" element={<PublicPage/>} />
             <Route path="/private" element={<PrivatePage/>} />
+            <Route path="*" element={<Navigate to="/public" replace />} />
           </Routes>
 
         </div>
