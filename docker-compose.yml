@@ -3,7 +3,7 @@ services:
     build: .
     network_mode: "host"
     volumes:
-      - /home/gagan/gagan-bet:/workspace
+      - .:/workspace
     environment:
       - PRIVATE_KEY=miniwhores
       - INIT_PUBLIC_KEY=asdf
@@ -14,7 +14,7 @@ services:
     network_mode: "host"
     command: python worker.py
     volumes:
-      - /home/gagan/gagan-bet:/workspace
+      - .:/workspace
     depends_on:
       - redis
   redis:
