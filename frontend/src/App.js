@@ -1,33 +1,69 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
-import $ from 'jquery';
+// import $ from 'jquery'; // to remove once moved to fetch
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
 
 function PublicPage() {
   const [publicPassphrase, setPublicPassphrase] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission to your chosen URL
+  const handleSubmit = async () => {
     const form_data = {
       "public_passphrase": publicPassphrase
     }
 
-    $.ajax({
-      url: '/buzzin',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      data: form_data,
-      success: function (data) {
-        console.log('Form submitted successfully');
-      },
-      error: function (error) {
-        console.error('Form submission failed', error);
-        console.log(form_data);
-      },
-    });
+    try {
+      const response = await fetch('/buzzin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: form_data,
+      });
+      const data = await response.json();
 
-    console.log('Submitting public passphrase:', publicPassphrase);
+      if (response.ok) {
+        // Display success toast with the message from the API response
+        toast.success(data.message || 'POST request successful!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      } else {
+        // Display error toast with the error message from the API response
+        toast.error(data.message || 'POST request failed!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }
+    } catch (error) {
+      // Display error toast for network or other errors
+      toast.error('An error occurred while making the POST request.', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
+
+    // e.preventDefault();
+    // // Handle form submission to your chosen URL
+    // const form_data = {
+    //   "public_passphrase": publicPassphrase
+    // }
+
+    // $.ajax({
+    //   url: '/buzzin',
+    //   method: 'POST',
+    //   contentType: 'application/x-www-form-urlencoded',
+    //   data: form_data,
+    //   success: function (data) {
+    //     console.log('Form submitted successfully');
+    //   },
+    //   error: function (error) {
+    //     console.error('Form submission failed', error);
+    //     console.log(form_data);
+    //   },
+    // });
+
+    // console.log('Submitting public passphrase:', publicPassphrase);
   };
 
   return (
@@ -50,30 +86,56 @@ function PrivatePage() {
   const [privatePassphrase, setPrivatePassphrase] = useState('');
   const [newPublicPassphrase, setNewPublicPassphrase] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission to your chosen URL
+  const handleSubmit = async () => {
     const form_data = {
       "private_passphrase": privatePassphrase,
       "new_public_passphrase": newPublicPassphrase
     }
 
-    $.ajax({
-      url: '/updatepublickey',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      data: form_data,
-      success: function (data) {
-        console.log('Form submitted successfully');
-      },
-      error: function (error) {
-        console.error('Form submission failed', error);
-        console.log(form_data);
-      },
-    });
+    try {
+      const response = await fetch('/updatepublickey', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: form_data,
+      });
+      const data = await response.json();
 
-    console.log('Submitting private passphrase:', privatePassphrase);
-    console.log('Submitting new public passphrase:', newPublicPassphrase);
+      if (response.ok) {
+        // Display success toast with the message from the API response
+        toast.success(data.message || 'POST request successful!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      } else {
+        // Display error toast with the error message from the API response
+        toast.error(data.message || 'POST request failed!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }
+    } catch (error) {
+      // Display error toast for network or other errors
+      toast.error('An error occurred while making the POST request.', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
+
+    // $.ajax({
+    //   url: '/updatepublickey',
+    //   method: 'POST',
+    //   contentType: 'application/x-www-form-urlencoded',
+    //   data: form_data,
+    //   success: function (data) {
+    //     console.log('Form submitted successfully');
+    //   },
+    //   error: function (error) {
+    //     console.error('Form submission failed', error);
+    //     console.log(form_data);
+    //   },
+    // });
+
+    // console.log('Submitting private passphrase:', privatePassphrase);
+    // console.log('Submitting new public passphrase:', newPublicPassphrase);
   };
 
   return (

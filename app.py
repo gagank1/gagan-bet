@@ -35,9 +35,9 @@ def buzzin():
         rdb.publish('BUZZ', json.dumps({
             'buzz': 'in'
         }))
-        return "Buzzed in successfully"
+        return jsonify({'message': 'Buzzed in successfully'})
     else:
-        return ("Wrong passphrase", 401)
+        return jsonify({'message': "Wrong passphrase"}), 401
 
 # Handle public passphrase update
 @app.route('/updatepublickey', methods=['POST'])
@@ -50,9 +50,9 @@ def updatepublickey():
     if entered_private_key == true_private_key:
         new_public_key = request.form['new_public_passphrase']
         rdb.set('PUBLIC_PASSPHRASE', new_public_key)
-        return "Successfully changed public passphrase"
+        return jsonify({'message': "Successfully changed public passphrase"})
     else:
-        return ("Incorrect private passphrase", 401)
+        return jsonify({'message': "Incorrect private passphrase"}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)
