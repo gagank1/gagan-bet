@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function PublicPage() {
   const [publicPassphrase, setPublicPassphrase] = useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const form_data = {
       "public_passphrase": publicPassphrase
     }
@@ -76,7 +77,6 @@ function PublicPage() {
         />
         <button type="submit">Submit</button>
       </form>
-      <ToastContainer />
     </div>
   );
 }
@@ -85,7 +85,8 @@ function PrivatePage() {
   const [privatePassphrase, setPrivatePassphrase] = useState('');
   const [newPublicPassphrase, setNewPublicPassphrase] = useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const form_data = {
       "private_passphrase": privatePassphrase,
       "new_public_passphrase": newPublicPassphrase
@@ -155,32 +156,36 @@ function PrivatePage() {
         />
         <button type="submit">Submit</button>
       </form>
-      <ToastContainer />
     </div>
   );
 }
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Public Page</Link>
-            </li>
-            <li>
-              <Link to="/private">Private Page</Link>
-            </li>
-          </ul>
-        </nav>
+    <div>
+      <Router>
+        <div className="App">
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Public Page</Link>
+              </li>
+              <li>
+                <Link to="/private">Private Page</Link>
+              </li>
+            </ul>
+          </nav>
 
-        <Routes>
-          <Route path="/" element={<PublicPage/>} />
-          <Route path="/private" element={<PrivatePage/>} />
-        </Routes>
-      </div>
-    </Router>
+          <Routes>
+            <Route path="/" element={<PublicPage/>} />
+            <Route path="/private" element={<PrivatePage/>} />
+          </Routes>
+
+          
+        </div>
+      </Router>
+      <ToastContainer />
+    </div>
   );
 }
 
