@@ -7,6 +7,7 @@ Tech stack:
 - Backend: Flask (served by Gunicorn)
 - Datastore: Redis
 - Reverse proxy: nginx
+- Hosting: Hetzner Cloud (VPS)
 
 Runs in 3 Docker containers orchestrated with docker compose. One for the Flask backend, one for the worker that processes requests, and one for redis.
 
