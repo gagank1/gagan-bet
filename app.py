@@ -26,9 +26,10 @@ def index():
 # Handle buzz in request
 @app.route('/buzzin', methods=['POST'])
 def buzzin():
-    app.logger.info(f'Hit /buzzin, request: {json.dumps(request.form)}')
+    app.logger.info(f'Hit /buzzin, request: {json.dumps(request.json)}')
     
-    passphrase = request.form['public_passphrase']
+    content = request.json
+    passphrase = content['public_passphrase']
     pwd = rdb.get('PUBLIC_PASSPHRASE')
     
     if passphrase == pwd:
@@ -42,13 +43,14 @@ def buzzin():
 # Handle public passphrase update
 @app.route('/updatepublickey', methods=['POST'])
 def updatepublickey():
-    app.logger.info(f'Hit /updatepublickey, request: {json.dumps(request.form)}')
+    app.logger.info(f'Hit /updatepublickey, request: {json.dumps(request.json)}')
+    content = request.json
     
-    entered_private_key = request.form['private_passphrase']
+    entered_private_key = content['private_passphrase']
     true_private_key = rdb.get('PRIVATE_PASSPHRASE')
     
     if entered_private_key == true_private_key:
-        new_public_key = request.form['new_public_passphrase']
+        new_public_key = content['new_public_passphrase']
         rdb.set('PUBLIC_PASSPHRASE', new_public_key)
         return jsonify({'message': "Successfully changed public passphrase"})
     else:

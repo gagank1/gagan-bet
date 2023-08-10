@@ -17,9 +17,9 @@ function PublicPage() {
       const response = await fetch('/buzzin', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         },
-        body: form_data,
+        body: JSON.stringify(form_data),
       });
       const data = await response.json();
 
@@ -95,9 +95,9 @@ function PrivatePage() {
       const response = await fetch('/updatepublickey', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         },
-        body: form_data,
+        body: JSON.stringify(form_data),
       });
       const data = await response.json();
 
