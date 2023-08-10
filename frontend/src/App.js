@@ -41,28 +41,6 @@ function PublicPage() {
         position: toast.POSITION.TOP_RIGHT
       });
     }
-
-    // e.preventDefault();
-    // // Handle form submission to your chosen URL
-    // const form_data = {
-    //   "public_passphrase": publicPassphrase
-    // }
-
-    // $.ajax({
-    //   url: '/buzzin',
-    //   method: 'POST',
-    //   contentType: 'application/x-www-form-urlencoded',
-    //   data: form_data,
-    //   success: function (data) {
-    //     console.log('Form submitted successfully');
-    //   },
-    //   error: function (error) {
-    //     console.error('Form submission failed', error);
-    //     console.log(form_data);
-    //   },
-    // });
-
-    // console.log('Submitting public passphrase:', publicPassphrase);
   };
 
   return (
@@ -119,23 +97,6 @@ function PrivatePage() {
         position: toast.POSITION.TOP_RIGHT
       });
     }
-
-    // $.ajax({
-    //   url: '/updatepublickey',
-    //   method: 'POST',
-    //   contentType: 'application/x-www-form-urlencoded',
-    //   data: form_data,
-    //   success: function (data) {
-    //     console.log('Form submitted successfully');
-    //   },
-    //   error: function (error) {
-    //     console.error('Form submission failed', error);
-    //     console.log(form_data);
-    //   },
-    // });
-
-    // console.log('Submitting private passphrase:', privatePassphrase);
-    // console.log('Submitting new public passphrase:', newPublicPassphrase);
   };
 
   return (
@@ -181,7 +142,6 @@ function App() {
             <Route path="/private" element={<PrivatePage/>} />
           </Routes>
 
-          
         </div>
       </Router>
       <ToastContainer />
