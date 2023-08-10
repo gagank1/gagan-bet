@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
-// import $ from 'jquery'; // to remove once moved to fetch
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-toast.configure()
 
 function PublicPage() {
   const [publicPassphrase, setPublicPassphrase] = useState('');
@@ -78,6 +76,7 @@ function PublicPage() {
         />
         <button type="submit">Submit</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
@@ -156,6 +155,7 @@ function PrivatePage() {
         />
         <button type="submit">Submit</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
