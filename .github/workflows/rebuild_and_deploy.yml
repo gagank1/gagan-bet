@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: debug
+        run: |
+          pwd
+          ls -l
 
       - name: Docker Compose Down
         run: docker compose down
