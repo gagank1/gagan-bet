@@ -1,0 +1,25 @@
+name: Rebuild and Deploy Services
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  rebuild-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Docker Compose Down
+        run: docker compose down
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Frontend
+        run: |
+          cd ./frontend
+          npm run build
+
+      - name: Docker Compose Up
+        run: docker compose up -d --force-recreate --build
