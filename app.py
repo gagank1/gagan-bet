@@ -11,7 +11,7 @@ if __name__ != '__main__':
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
 
-rdb = redis.Redis(host='localhost', port=6379, decode_responses=True)
+rdb = redis.Redis(host='redis', port=6379, decode_responses=True)
 
 # load private/public keys from previous run if available
 if rdb.exists('PRIVATE_PASSPHRASE') == 0:

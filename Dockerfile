@@ -5,4 +5,5 @@ WORKDIR /workspace
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-CMD [ "gunicorn", "--log-level=info", "app:app" ]
+EXPOSE 8000
+CMD [ "/bin/bash" ]

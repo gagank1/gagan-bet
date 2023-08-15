@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 def run():
-    rdb = redis.Redis(host='localhost', port=6379, decode_responses=True)
+    rdb = redis.Redis(host='redis', port=6379, decode_responses=True)
     p = rdb.pubsub(ignore_subscribe_messages=True)
     p.subscribe('BUZZ')
     logging.info('Subscribed to BUZZ channel')
