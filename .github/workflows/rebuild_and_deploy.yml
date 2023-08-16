@@ -25,4 +25,4 @@ jobs:
       
       - name: Build containers and bring up service
         working-directory: /home/gagan/gagan-bet
-        run: docker compose up -d --force-recreate --build
+        run: docker compose up -d --build

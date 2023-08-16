@@ -1,4 +1,5 @@
 cd frontend
+npm install
 npm run build
 cd ..
-docker compose up --force-recreate --build
+docker compose up --build
