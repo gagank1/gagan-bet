@@ -45,7 +45,7 @@ function PublicPage() {
 
   return (
     <div>
-      <h1>Public Passphrase</h1>
+      <h1>Enter password to buzz in</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -101,7 +101,7 @@ function PrivatePage() {
 
   return (
     <div>
-      <h1>Private Passphrase</h1>
+      <h1>Reset public password</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -129,10 +129,10 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/public">Public Page</Link>
+                <Link to="/public">Buzz in</Link>
               </li>
               <li>
-                <Link to="/private">Private Page</Link>
+                <Link to="/private">Admin</Link>
               </li>
             </ul>
           </nav>
