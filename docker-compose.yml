@@ -20,3 +20,8 @@ services:
       - redis
   redis:
     image: redis:7.0.12
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
