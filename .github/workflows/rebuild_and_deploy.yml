@@ -16,6 +16,10 @@ jobs:
       - name: Bring down service
         working-directory: /home/gagan/gagan-bet
         run: docker compose down
+
+      - name: Pull latest changes
+        working-directory: /home/gagan/gagan-bet
+        run: git pull
       
       - name: Build frontend
         working-directory: /home/gagan/gagan-bet/frontend
