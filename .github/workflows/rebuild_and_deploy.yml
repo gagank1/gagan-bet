@@ -10,22 +10,19 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      # - name: debug
-      #   run: |
-      #     pwd
-      #     ls -l
+      # - name: Checkout code
+      #   uses: actions/checkout@v3
 
-      - name: Docker Compose Down
+      - name: Bring down service
+        working-directory: /home/gagan/gagan-bet
         run: docker compose down
-
-      # can't build in workflow because i'm not checking in node_modules. nothing to build. need to push build folder manually.
-      # - name: Build Frontend
-      #   run: |
-      #     cd ./frontend
-      #     npm run build
-
-      - name: Docker Compose Up
+      
+      - name: Build frontend
+        working-directory: /home/gagan/gagan-bet/frontend
+        run: |
+          npm install
+          npm run build
+      
+      - name: Build containers and bring up service
+        working-directory: /home/gagan/gagan-bet
         run: docker compose up -d --force-recreate --build
