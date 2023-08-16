@@ -6,9 +6,9 @@ Tech stack:
 - Frontend: React with react-router-dom and react-toastify
 - Backend: Flask (served by Gunicorn)
 - Datastore/Job Queue: Redis
+- Continuous Deployment: Github Actions (see .github/workflows)
 - Reverse proxy: nginx
 - Hosting: Hetzner Cloud (VPS)
-- Continuous Deployment: Github Actions (see .github/workflows)
 
 Runs in 3 Docker containers orchestrated with docker compose. One for the Flask backend, one for the worker that processes requests, and one for redis.
 
