@@ -19,7 +19,9 @@ jobs:
 
       - name: Pull latest changes
         working-directory: /home/gagan/gagan-bet
-        run: git pull
+        run: |
+          git reset --hard HEAD
+          git pull
       
       - name: Build frontend
         working-directory: /home/gagan/gagan-bet/frontend
