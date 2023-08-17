@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+function Zehra() {
+  return (
+    <div>
+      <h1>HAPPY BIRTHDAY ZEHRA! ❤️</h1>
+      <p>Don’t roast me but since I’m your beep boop 🙄 I thought it’d only be fitting if I made a beep boop card.</p>
+      <p>It's hard to believe that it's been almost a year since we first crossed paths. Time feels like it’s flying by whenever we’re together. We just enter our own little weirdo universe, and it’s just perfect. You’re MY weirdo fr, and I feel so lucky that we share this special connection. I’m incredibly grateful for you and everything you do for me. All the sweet thoughtful things, and all ways you make me tweak too. Despite everything we’ve been through I love you more than ever. I love every minute I spend with you and I can’t wait to spend many, many more together.</p>
+      <p>I hope your birthday is as extraordinary as you are baby.</p>
+      <p>Love,</p>
+      <p>Gagan</p>
+      <img src="https://media.istockphoto.com/id/938480944/vector/panda-bear-illustration.jpg?s=612x612&w=0&k=20&c=eSaXCfW6D4hYwRYeTfyKDsxScRyJqZISk3DCV16AbFo=" alt="Your description" />
+    </div>
+  );
+}
 
 function PublicPage() {
   const [publicPassphrase, setPublicPassphrase] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +43,7 @@ function PublicPage() {
         toast.success(data.message || 'POST request successful!', {
           position: toast.POSITION.TOP_RIGHT
         });
+        navigate('/zehra');
       } else {
         // Display error toast with the error message from the API response
         toast.error(data.message || 'POST request failed!', {
@@ -140,6 +155,7 @@ function App() {
           <Routes>
             <Route path="/public" element={<PublicPage/>} />
             <Route path="/private" element={<PrivatePage/>} />
+            <Route path="/zehra" element={<Zehra/>} />
             <Route path="*" element={<Navigate to="/public" replace />} />
           </Routes>
 
