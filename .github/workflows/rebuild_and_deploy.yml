@@ -10,25 +10,25 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout latest main
+        uses: actions/checkout@v3
 
       - name: Bring down service
-        working-directory: /home/gagan/gagan-bet
+        # working-directory: /home/gagan/gagan-bet
         run: docker compose down
 
-      - name: Pull latest changes
-        working-directory: /home/gagan/gagan-bet
-        run: |
-          git reset --hard HEAD
-          git pull
+      # - name: Pull latest changes
+      #   working-directory: /home/gagan/gagan-bet
+      #   run: |
+      #     git reset --hard HEAD
+      #     git pull
       
-      - name: Build frontend
-        working-directory: /home/gagan/gagan-bet/frontend
-        run: |
-          npm install
-          npm run build
+      # - name: Build frontend
+      #   working-directory: /home/gagan/gagan-bet/frontend
+      #   run: |
+      #     npm install
+      #     npm run build
       
-      - name: Build containers and bring up service
-        working-directory: /home/gagan/gagan-bet
+      - name: Rebuild containers and bring up service
+        # working-directory: /home/gagan/gagan-bet
         run: docker compose up -d --build

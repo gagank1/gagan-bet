@@ -3,15 +3,24 @@ import requests
 import json
 import traceback
 import logging
+import signal
+import sys
 
 logging.basicConfig(level=logging.INFO)
 
+rdb = redis.Redis(host='redis', port=6379, decode_responses=True)
+p = rdb.pubsub(ignore_subscribe_messages=True)
+p.subscribe('BUZZ')
+logging.info('Subscribed to BUZZ channel')
+
+# for faster shutdown on `docker compose down`
+def graceful_shutdown(signum, frame):
+    logging.info("Received SIGTERM signal. Shutting down...")
+    p.close()
+    sys.exit(0)
+signal.signal(signal.SIGTERM, graceful_shutdown)
+
 def run():
-    rdb = redis.Redis(host='redis', port=6379, decode_responses=True)
-    p = rdb.pubsub(ignore_subscribe_messages=True)
-    p.subscribe('BUZZ')
-    logging.info('Subscribed to BUZZ channel')
-    
     try:
         for message in p.listen():
             d = message['data']
@@ -23,3 +32,5 @@ def run():
 
 if __name__ == "__main__":
     run()
+else:
+    p.close()

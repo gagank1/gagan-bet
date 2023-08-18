@@ -20,7 +20,6 @@ Copy the included configuration file into the default configuration in sites-ava
 ## Run App
 
 Requirements:
-- Node.js
 - Docker
 
-Build the react app in `frontend/` with `npm install` then `npm run build`. Then start the containers with `docker compose up --build`. `source build_and_run.sh` will do all of this for you.
+Start the containers with `docker compose up --build`. Visit http://localhost:8000 to view the app.
