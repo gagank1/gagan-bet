@@ -21,3 +21,8 @@ services:
 
 volumes:
   redis-data:
+
+networks:
+  default:
+    external: true
+    name: scoobydoo
