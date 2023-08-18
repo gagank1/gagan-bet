@@ -12,11 +12,6 @@ Tech stack:
 
 Runs in 3 Docker containers orchestrated with docker compose. One for the Flask backend, one for the worker that processes requests, and one for redis.
 
-Nginx reverse proxies and handles SSL. All requests are forwarded to gunicorn including static file serving. It directly serves the react build folder.
-
-To configure nginx:
-Copy the included configuration file into the default configuration in sites-available. Then run certbot to enable HTTPS.
-
 ## Run App
 
 Requirements:
