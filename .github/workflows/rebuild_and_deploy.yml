@@ -10,11 +10,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout latest main
+      - name: Checkout previous state of main
         uses: actions/checkout@v3
-
+        with:
+          ref: ${{ github.event.before }}
+      
       - name: Bring down service
         run: docker compose down
+
+      - name: Checkout latest main
+        uses: actions/checkout@v3
 
       - name: Rebuild containers and bring up service
         run: docker compose up -d --build
