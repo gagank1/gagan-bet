@@ -1,25 +1,25 @@
-name: Rebuild and Deploy Services
+# name: Rebuild and Deploy Services
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  rebuild-deploy:
-    runs-on: self-hosted
+# jobs:
+#   rebuild-deploy:
+#     runs-on: self-hosted
 
-    steps:
-      - name: Checkout previous state of main
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.before }}
+#     steps:
+#       - name: Checkout previous state of main
+#         uses: actions/checkout@v3
+#         with:
+#           ref: ${{ github.event.before }}
       
-      - name: Bring down service
-        run: docker compose down
+#       - name: Bring down service
+#         run: docker compose down
 
-      - name: Checkout latest main
-        uses: actions/checkout@v3
+#       - name: Checkout latest main
+#         uses: actions/checkout@v3
 
-      - name: Rebuild containers and bring up service
-        run: docker compose up -d --build
+#       - name: Rebuild containers and bring up service
+#         run: docker compose up -d --build

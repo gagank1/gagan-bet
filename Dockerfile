@@ -1,5 +1,5 @@
-# First stage: Build the React app
-FROM node:20.5.1 AS build
+# First stage: Build the React app on host arch without emulation
+FROM --platform=$BUILDPLATFORM node:20.5.1 AS build
 WORKDIR /workspace
 
 COPY ./frontend/package.json ./frontend/package-lock.json ./
@@ -11,7 +11,7 @@ RUN npm run build
 
 
 # Second stage: Build the Flask app
-FROM python:3.11.4
+FROM python:3.11
 WORKDIR /workspace
 
 COPY requirements.txt .
@@ -21,4 +21,4 @@ COPY . .
 COPY --from=build /workspace/build ./frontend/build
 
 EXPOSE 8000
-CMD [ "/bin/bash" ]
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "app:app"]
