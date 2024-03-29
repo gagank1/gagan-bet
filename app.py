@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, JSONResponse
 from pydantic import BaseModel
 
-import redis
+# import redis
 import os
 import logging
 import asyncio
