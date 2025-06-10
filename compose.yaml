@@ -1,0 +1,17 @@
+services:
+  app:
+    image: proflagger/buzzer:latest-dev
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:8
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

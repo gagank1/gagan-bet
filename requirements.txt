@@ -1,5 +1,4 @@
-fastapi==0.101.1
-redis==4.6.0
-httpx==0.24.1
-uvicorn[standard]==0.23.2
-google-cloud-firestore
+fastapi==0.115.12
+redis==6.2.0
+httpx==0.28.1
+uvicorn[standard]==0.34.3

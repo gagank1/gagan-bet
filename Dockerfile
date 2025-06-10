@@ -11,7 +11,7 @@ RUN npm run build
 
 
 # Second stage: Build the Flask app
-FROM python:3.11
+FROM python:3.13
 WORKDIR /workspace
 
 COPY requirements.txt .
@@ -21,4 +21,4 @@ COPY . .
 COPY --from=build /workspace/build ./frontend/build
 
 EXPOSE 8000
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "app:app"]
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "9", "app:app"]
