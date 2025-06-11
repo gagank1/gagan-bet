@@ -29,8 +29,7 @@ function AdminPage() {
         setSuccess('');
         
         try {
-            const response = await axios.get(`/listtempkeys?private_passphrase=${privateKey}`);
-            setActiveKeys(response.data.active_keys);
+            await fetchActiveKeys();
             setIsAuthenticated(true);
             setError('');
         } catch (err) {
