@@ -117,6 +117,19 @@ function AdminPage() {
         }
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        });
+    };
+
     return (
         <div className="admin-page">
             <h1>Admin Dashboard</h1>
@@ -206,8 +219,8 @@ function AdminPage() {
                                     <tr key={key.key}>
                                         <td>{key.key}</td>
                                         <td>{key.note}</td>
-                                        <td>{new Date(key.created_at).toLocaleString()}</td>
-                                        <td>{new Date(key.expires_at).toLocaleString()}</td>
+                                        <td>{formatDate(key.created_at)}</td>
+                                        <td>{formatDate(key.expires_at)}</td>
                                         <td>{key.remaining_uses}</td>
                                         <td>
                                             <button 
