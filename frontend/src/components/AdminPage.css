@@ -128,4 +128,39 @@ tr:hover {
 
 .delete-button:active {
     background: #bd2130;
+}
+
+.copy-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.copy-container code {
+    flex: 1;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    word-break: break-all;
+}
+
+.copy-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+    background: #218838;
+}
+
+.copy-button:active {
+    background: #1e7e34;
 } 

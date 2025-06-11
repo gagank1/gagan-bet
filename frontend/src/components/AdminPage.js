@@ -17,6 +17,7 @@ function AdminPage() {
 
     // Add polling interval state
     const [pollingInterval, setPollingInterval] = useState(null);
+    const [copySuccess, setCopySuccess] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -106,6 +107,16 @@ function AdminPage() {
         }
     };
 
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopySuccess(true);
+            setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+        } catch (err) {
+            setError('Failed to copy to clipboard');
+        }
+    };
+
     return (
         <div className="admin-page">
             <h1>Admin Dashboard</h1>
@@ -165,7 +176,15 @@ function AdminPage() {
                         <div className="new-key-section">
                             <h3>New Temporary Key Created</h3>
                             <p>Share this URL with the recipient:</p>
-                            <code>{`${window.location.origin}/tempkeylanding/${newKey}`}</code>
+                            <div className="copy-container">
+                                <code>{`${window.location.origin}/tempkeylanding/${newKey}`}</code>
+                                <button 
+                                    onClick={() => copyToClipboard(`${window.location.origin}/tempkeylanding/${newKey}`)}
+                                    className="copy-button"
+                                >
+                                    {copySuccess ? 'Copied!' : 'Copy URL'}
+                                </button>
+                            </div>
                         </div>
                     )}
 
