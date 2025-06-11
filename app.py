@@ -147,8 +147,8 @@ async def create_temp_key(
     
     # Store in Redis with expiration
     expiration_seconds = form.expiration_hours * 3600
-    created_at = datetime.datetime.now().isoformat()
-    expires_at = (datetime.datetime.now() + datetime.timedelta(hours=form.expiration_hours)).isoformat()
+    created_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    expires_at = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=form.expiration_hours)).isoformat()
     
     # Store key info as a JSON string
     key_info = {

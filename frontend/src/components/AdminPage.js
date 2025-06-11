@@ -118,6 +118,7 @@ function AdminPage() {
     };
 
     const formatDate = (dateString) => {
+        // Parse the ISO string and convert to local time
         const date = new Date(dateString);
         return date.toLocaleString(undefined, {
             year: 'numeric',
