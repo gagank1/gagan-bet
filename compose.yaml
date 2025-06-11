@@ -1,17 +1,28 @@
 services:
   app:
-    image: proflagger/buzzer:latest-dev
+    image: ghcr.io/gagank1/proflagger-buzzer:main
+    restart: always
     ports:
       - "8000:8000"
     depends_on:
       - redis
+      - watchtower
 
   redis:
     image: redis:8
+    restart: always
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    depends_on:
+      - watchtower
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   redis_data:
