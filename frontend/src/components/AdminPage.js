@@ -53,7 +53,11 @@ function AdminPage() {
         setSuccess('');
         
         try {
-            await fetchActiveKeys();
+            const response = await axios.get(`/listtempkeys?private_passphrase=${privateKey}`);
+            // Only set authenticated and start polling if we successfully got the keys
+            setActiveKeys(response.data.active_keys.sort((a, b) => 
+                new Date(b.created_at) - new Date(a.created_at)
+            ));
             setIsAuthenticated(true);
             setError('');
             
