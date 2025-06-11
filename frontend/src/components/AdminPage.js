@@ -61,11 +61,28 @@ function AdminPage() {
     const fetchActiveKeys = async () => {
         try {
             const response = await axios.get(`/listtempkeys?private_passphrase=${privateKey}`);
-            setActiveKeys(response.data.active_keys);
+            // Sort keys by creation date, most recent first
+            const sortedKeys = response.data.active_keys.sort((a, b) => 
+                new Date(b.created_at) - new Date(a.created_at)
+            );
+            setActiveKeys(sortedKeys);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to fetch active keys');
             setIsAuthenticated(false);
             setActiveKeys([]);
+        }
+    };
+
+    const deleteTempKey = async (key) => {
+        setError('');
+        setSuccess('');
+        
+        try {
+            await axios.delete(`/deletetempkey/${key}?private_passphrase=${privateKey}`);
+            setSuccess('Temporary key deleted successfully!');
+            fetchActiveKeys();
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to delete temporary key');
         }
     };
 
@@ -142,6 +159,7 @@ function AdminPage() {
                                     <th>Created</th>
                                     <th>Expires</th>
                                     <th>Remaining Uses</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,6 +170,14 @@ function AdminPage() {
                                         <td>{new Date(key.created_at).toLocaleString()}</td>
                                         <td>{new Date(key.expires_at).toLocaleString()}</td>
                                         <td>{key.remaining_uses}</td>
+                                        <td>
+                                            <button 
+                                                onClick={() => deleteTempKey(key.key)}
+                                                className="delete-button"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

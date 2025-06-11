@@ -286,6 +286,39 @@ async def validate_temp_key(
         'expires_at': key_info['expires_at']
     }
 
+@app.delete('/deletetempkey/{temp_key}')
+async def delete_temp_key(
+    temp_key: str,
+    private_passphrase: str,
+    logger: Annotated[logging.Logger, Depends(get_global_logger)],
+    redis_client: Annotated[redis.Redis, Depends(get_db)]
+):
+    logger.info(f'Hit /deletetempkey/{temp_key}')
+    
+    # Verify private passphrase
+    true_private_key = await get_redis_value('private_passphrase', redis_client, logger)
+    
+    if private_passphrase != true_private_key:
+        logger.error('Failed to delete temp key: incorrect private passphrase')
+        return JSONResponse(
+            status_code=401,
+            content={'message': "Incorrect private passphrase"}
+        )
+    
+    # Check if key exists
+    key_info_str = await redis_client.get(f'temp_key:{temp_key}')
+    if not key_info_str:
+        logger.error(f'Temporary key not found: {temp_key}')
+        return JSONResponse(
+            status_code=404,
+            content={'message': "Temporary key not found"}
+        )
+    
+    # Delete the key
+    await redis_client.delete(f'temp_key:{temp_key}')
+    logger.info(f'Deleted temporary key: {temp_key}')
+    return {'message': 'Temporary key deleted successfully'}
+
 @app.get("/{full_path:path}")
 async def serve_spa(full_path: str):
     # Skip API routes
