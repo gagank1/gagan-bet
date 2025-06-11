@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminPage.css';
 
@@ -15,12 +15,35 @@ function AdminPage() {
     const [success, setSuccess] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    // Add polling interval state
+    const [pollingInterval, setPollingInterval] = useState(null);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
         }));
+    };
+
+    const fetchActiveKeys = async () => {
+        try {
+            const response = await axios.get(`/listtempkeys?private_passphrase=${privateKey}`);
+            // Sort keys by creation date, most recent first
+            const sortedKeys = response.data.active_keys.sort((a, b) => 
+                new Date(b.created_at) - new Date(a.created_at)
+            );
+            setActiveKeys(sortedKeys);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to fetch active keys');
+            setIsAuthenticated(false);
+            setActiveKeys([]);
+            // Stop polling if we get an error
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                setPollingInterval(null);
+            }
+        }
     };
 
     const handleAuthSubmit = async (e) => {
@@ -32,12 +55,25 @@ function AdminPage() {
             await fetchActiveKeys();
             setIsAuthenticated(true);
             setError('');
+            
+            // Start polling when authenticated
+            const interval = setInterval(fetchActiveKeys, 5000); // Poll every 5 seconds
+            setPollingInterval(interval);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to authenticate');
             setIsAuthenticated(false);
             setActiveKeys([]);
         }
     };
+
+    // Cleanup polling on component unmount
+    useEffect(() => {
+        return () => {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+        };
+    }, [pollingInterval]);
 
     const createTempKey = async (e) => {
         e.preventDefault();
@@ -54,21 +90,6 @@ function AdminPage() {
             fetchActiveKeys();
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to create temporary key');
-        }
-    };
-
-    const fetchActiveKeys = async () => {
-        try {
-            const response = await axios.get(`/listtempkeys?private_passphrase=${privateKey}`);
-            // Sort keys by creation date, most recent first
-            const sortedKeys = response.data.active_keys.sort((a, b) => 
-                new Date(b.created_at) - new Date(a.created_at)
-            );
-            setActiveKeys(sortedKeys);
-        } catch (err) {
-            setError(err.response?.data?.message || 'Failed to fetch active keys');
-            setIsAuthenticated(false);
-            setActiveKeys([]);
         }
     };
 
