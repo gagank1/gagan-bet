@@ -7,6 +7,8 @@ services:
     depends_on:
       - redis
       - watchtower
+    env_file:
+      - .env
 
   redis:
     image: redis:8
