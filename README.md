@@ -1,6 +1,6 @@
-# proflagger.com
+# buzzer.proflagger.com
 
-This is the code for the website https://proflagger.com.
+This is the code for the website https://buzzer.proflagger.com.
 
 Tech stack:
 - Frontend: React
@@ -10,4 +10,4 @@ Tech stack:
 
 ## Run App
 
-Build the image with `./build.sh` and start the app with `docker compose up`.
+`docker compose up`
