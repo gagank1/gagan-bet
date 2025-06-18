@@ -1,4 +1,12 @@
 frontend/build
 frontend/node_modules
+node_modules
+__pycache__
+*.pyc
+.git
+.gitignore
+venv
+.venv
 buzzer-418603-732db8e02147.json
 .env
+.env.example

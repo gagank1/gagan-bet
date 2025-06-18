@@ -15,9 +15,9 @@ FROM python:3.13
 WORKDIR /workspace
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 # same cacheing strategy as above
-COPY . .
+COPY *.py ./
 COPY --from=build /workspace/build ./frontend/build
 
 EXPOSE 8000
