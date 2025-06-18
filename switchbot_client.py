@@ -1,3 +1,4 @@
+import asyncio
 from httpx import AsyncClient
 import os
 import json
@@ -12,7 +13,6 @@ class SwitchbotClient:
         self.client = http_client
         self.token = os.environ['SWITCHBOT_API_TOKEN']
         self.secret = os.environ['SWITCHBOT_SECRET_KEY']
-        self.headers = self.get_headers()
     
     def get_headers(self):
         apiHeader = {}
@@ -38,6 +38,27 @@ class SwitchbotClient:
         apiHeader['nonce']=str(nonce)
         return apiHeader
 
-    async def get_devices(self):
-        response = await self.client.get("/devices")
+    async def get_all_devices(self):
+        response = await self.client.get('/v1.1/devices', headers=self.get_headers())
+        response.raise_for_status()
         return response.json()
+    
+    async def press_bot(self, device_id: str | None = None):
+        device_id = os.getenv('SWITCHBOT_DEVICE_ID', device_id)
+        if device_id is None:
+            raise ValueError('SWITCHBOT_DEVICE_ID is not set and no device_id was provided. one of these must be set')
+        
+        response = await self.client.post(
+            f'/v1.1/devices/{device_id}/commands',
+            headers=self.get_headers(),
+            json={
+                "command": "press",
+                "parameter": "default",
+                "commandType": "command"
+            }
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    async def boof_call(self):
+        await asyncio.sleep(0.5)

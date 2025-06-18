@@ -5,35 +5,50 @@ from pydantic import BaseModel
 import secrets
 import datetime
 import json
+from contextlib import asynccontextmanager
 
 import os
 import logging
 import asyncio
 from typing import Annotated
 import redis.asyncio as redis
+from httpx import AsyncClient
+from switchbot_client import SwitchbotClient
 
-# Redis connection
-redis_client = redis.Redis(
-    host='redis',
-    port=6379,
-    db=0,
-    decode_responses=True
-)
+
+_redis_client = None
+_switchbot = None
 
 async def get_db():
-    return redis_client
+    return _redis_client
 
-app = FastAPI()
+async def get_switchbot_client() -> SwitchbotClient:
+    return _switchbot
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global _redis_client, _switchbot
+    
+    _redis_client = redis.Redis(
+        host='redis',
+        port=6379,
+        db=0,
+        decode_responses=True
+    )
+    async_client = AsyncClient(base_url='https://api.switch-bot.com')
+    _switchbot = SwitchbotClient(async_client)
+
+    yield
+    
+    await async_client.aclose()
+
+app = FastAPI(lifespan=lifespan)
+
 app.mount('/static', StaticFiles(directory='frontend/build'))
 
 global_logger = logging.getLogger('uvicorn.error')
 async def get_global_logger():
     return global_logger
-
-
-async def switchbot_api_call():
-    await asyncio.sleep(0.5)
-    # TODO: make call to switchbot api using httpx here
 
 
 # Serve the React app
@@ -61,9 +76,12 @@ class BuzzinForm(BaseModel):
 
 # Handle buzz in request
 @app.post('/buzzin')
-async def buzzin(bf: BuzzinForm, 
-                 logger: Annotated[logging.Logger, Depends(get_global_logger)], 
-                 redis_client: Annotated[redis.Redis, Depends(get_db)]):
+async def buzzin(
+    bf: BuzzinForm, 
+    logger: Annotated[logging.Logger, Depends(get_global_logger)], 
+    redis_client: Annotated[redis.Redis, Depends(get_db)],
+    switchbot: Annotated[SwitchbotClient, Depends(get_switchbot_client)],
+):
     
     logger.info(f'Hit /buzzin, request: {bf.model_dump_json()}')
     
@@ -72,7 +90,7 @@ async def buzzin(bf: BuzzinForm,
     pwd = await get_redis_value('public_passphrase', redis_client, logger)
     
     if passphrase == pwd:
-        await switchbot_api_call()
+        await switchbot.boof_call()
         logger.info('Buzzed in successfully')
         return {'message': 'Buzzed in successfully'}
     else:
@@ -173,7 +191,8 @@ async def create_temp_key(
 async def use_temp_key(
     temp_key: str,
     logger: Annotated[logging.Logger, Depends(get_global_logger)],
-    redis_client: Annotated[redis.Redis, Depends(get_db)]
+    redis_client: Annotated[redis.Redis, Depends(get_db)],
+    switchbot: Annotated[SwitchbotClient, Depends(get_switchbot_client)],
 ):
     logger.info(f'Hit /tempkey/{temp_key}')
     
@@ -210,7 +229,7 @@ async def use_temp_key(
         await redis_client.delete(f'temp_key:{temp_key}')
     
     # Trigger the buzzer
-    await switchbot_api_call()
+    await switchbot.boof_call()
     logger.info('Buzzed in successfully with temporary key')
     return {'message': 'Buzzed in successfully'}
 
