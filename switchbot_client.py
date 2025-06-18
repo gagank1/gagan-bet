@@ -8,6 +8,9 @@ import hmac
 import base64
 import uuid
 
+class SwitchbotException(Exception):
+    pass
+
 class SwitchbotClient:
     def __init__(self, http_client: AsyncClient):
         self.client = http_client
@@ -38,7 +41,7 @@ class SwitchbotClient:
         response = await self.client.get('/v1.1/devices', headers=self.get_headers())
         response.raise_for_status()
         if response.json()['statusCode'] > 100:
-            raise ValueError(response.json()['message'])
+            raise SwitchbotException(response.json()['message'])
         return response.json()
     
     async def press_bot(self, device_id: str | None = None):
@@ -57,7 +60,7 @@ class SwitchbotClient:
         )
         response.raise_for_status()
         if response.json()['statusCode'] > 100:
-            raise ValueError(response.json()['message'])
+            raise SwitchbotException(response.json()['message'])
         return response.json()
     
     async def boof_call(self):

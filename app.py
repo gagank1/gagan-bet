@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, JSONResponse, FileResponse
 from pydantic import BaseModel
@@ -13,7 +13,7 @@ import asyncio
 from typing import Annotated
 import redis.asyncio as redis
 from httpx import AsyncClient
-from switchbot_client import SwitchbotClient
+from switchbot_client import SwitchbotClient, SwitchbotException
 
 
 _redis_client = None
@@ -43,6 +43,13 @@ async def lifespan(app: FastAPI):
     await async_client.aclose()
 
 app = FastAPI(lifespan=lifespan)
+
+@app.exception_handler(SwitchbotException)
+async def switchbot_exception_handler(request: Request, exc: SwitchbotException):
+    return JSONResponse(
+        status_code=503,
+        content={"message": str(exc)},
+    )
 
 app.mount('/static', StaticFiles(directory='frontend/build'))
 
