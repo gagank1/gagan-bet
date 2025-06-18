@@ -10,3 +10,4 @@ venv
 buzzer-418603-732db8e02147.json
 .env
 .env.example
+test_switchbot_client.py
