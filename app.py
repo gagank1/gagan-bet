@@ -97,7 +97,7 @@ async def buzzin(
     pwd = await get_redis_value('public_passphrase', redis_client, logger)
     
     if passphrase == pwd:
-        await switchbot.boof_call()
+        await switchbot.press_bot()
         logger.info('Buzzed in successfully')
         return {'message': 'Buzzed in successfully'}
     else:
@@ -236,7 +236,7 @@ async def use_temp_key(
         await redis_client.delete(f'temp_key:{temp_key}')
     
     # Trigger the buzzer
-    await switchbot.boof_call()
+    await switchbot.press_bot()
     logger.info('Buzzed in successfully with temporary key')
     return {'message': 'Buzzed in successfully'}
 
